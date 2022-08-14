@@ -325,6 +325,14 @@ config VIDEO_BT866
 	  To compile this driver as a module, choose M here: the
 	  module will be called bt866.
 
+config VIDEO_ISL79987
+	tristate "Intersil ISL79987 video decoder"
+	depends on VIDEO_V4L2 && I2C
+	select VIDEO_V4L2_SUBDEV_API
+	select V4L2_FWNODE
+	help
+	  Support for the Intersil ISL79987 4ch Analog video decoder.
+
 config VIDEO_KS0127
 	tristate "KS0127 video decoder"
 	depends on VIDEO_V4L2 && I2C

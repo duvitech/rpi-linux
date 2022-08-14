@@ -1,0 +1,69 @@
+// SPDX-License-Identifier: GPL-2.0-only
+// Definitions for ISL79987 video decoder module on I2C
+/dts-v1/;
+/plugin/;
+
+/{
+	compatible = "brcm,bcm2835";
+
+	i2c_frag: fragment@0 {
+		target = <&i2c_csi_dsi>;
+		__overlay__ {
+			#address-cells = <1>;
+			#size-cells = <0>;
+			status = "okay";
+
+			isl79987: isl79987@44 {
+				compatible = "renesas,isl79987";
+				reg = <0x44>;
+				status = "okay";
+                
+				port {
+					isl79987_0: endpoint {
+						remote-endpoint = <&csi1_ep>;
+						clock-lanes = <0>;
+						data-lanes = <1 2>;
+						clock-noncontinuous;
+						link-frequencies =
+							/bits/ 64 <297000000>;
+					};
+				};
+			};
+
+		};
+	};
+
+	csi_frag: fragment@1 {
+		target = <&csi1>;
+		csi: __overlay__ {
+			status = "okay";
+			brcm,media-controller;
+
+			port {
+				csi1_ep: endpoint {
+					remote-endpoint = <&isl79987_0>;
+					data-lanes = <1 2>;
+				};
+			};
+		};
+	};
+
+	fragment@2 {
+		target = <&i2c0if>;
+		__overlay__ {
+			status = "okay";
+		};
+	};
+
+	fragment@3 {
+		target = <&i2c0mux>;
+		__overlay__ {
+			status = "okay";
+		};
+	};
+    
+	__overrides__ {
+		addr =			<&isl79987>,"reg:0";
+		media-controller = <&csi>,"brcm,media-controller?";
+	};
+};
