@@ -1802,7 +1802,7 @@ static const struct i2c_device_id isl79987_id[] = {
 MODULE_DEVICE_TABLE(i2c, isl79987_id);
 
 static const struct of_device_id isl79987_of_table[] = {
-	{ .compatible = "isl,isl79987", },
+	{ .compatible = "renesas,isl79987", },
 	{ }
 };
 MODULE_DEVICE_TABLE(of, isl79987_of_table);
