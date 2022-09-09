@@ -6,6 +6,33 @@
 /{
 	compatible = "brcm,bcm2835";
 
+	cvbs-in {
+		compatible = "composite-video-connector";
+		label = "CVBS IN";
+		ports {
+			port@0{
+				camera_0: endpoint {
+					remote-endpoint = <&isl79987_1>;
+				};
+			};
+			port@1{
+				camera_1: endpoint {
+					remote-endpoint = <&isl79987_2>;
+				};
+			};
+			port@2{
+				camera_2: endpoint {
+					remote-endpoint = <&isl79987_3>;
+				};
+			};
+			port@3{
+				camera_3: endpoint {
+					remote-endpoint = <&isl79987_4>;
+				};
+			};
+		};
+	};
+
 	i2c_frag: fragment@0 {
 		target = <&i2c_csi_dsi>;
 		__overlay__ {
@@ -14,22 +41,47 @@
 			status = "okay";
 
 			isl79987: isl79987@44 {
-				compatible = "renesas,isl79987";
+				compatible = "isil,isl79987";
 				reg = <0x44>;
 				status = "okay";
-                
-				port {
-					isl79987_0: endpoint {
-						remote-endpoint = <&csi1_ep>;
-						clock-lanes = <0>;
-						data-lanes = <1 2>;
-						clock-noncontinuous;
-						link-frequencies =
-							/bits/ 64 <297000000>;
+
+				ports {
+					#address-cells = <1>;
+					#size-cells = <0>;
+					port@0 {
+						reg = <0>;
+						isl79987_0: endpoint {
+							remote-endpoint = <&csi1_ep>;
+							clock-lanes = <0>;
+							data-lanes = <1 2>;
+						};
+					};
+					port@1 {
+						reg = <1>;
+						isl79987_1: endpoint {
+							remote-endpoint = <&camera_0>;
+						};
+					};
+					port@2 {
+						reg = <2>;
+						isl79987_2: endpoint {
+							remote-endpoint = <&camera_1>;
+						};
+					};
+					port@3 {
+						reg = <3>;
+						isl79987_3: endpoint {
+							remote-endpoint = <&camera_2>;
+						};
+					};
+					port@4 {
+						reg = <4>;
+						isl79987_4: endpoint {
+							remote-endpoint = <&camera_3>;
+						};
 					};
 				};
 			};
-
 		};
 	};
 
