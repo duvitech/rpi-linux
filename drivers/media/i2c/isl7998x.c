@@ -579,16 +579,9 @@ static int isl7998x_get_nr_inputs(struct device_node *of_node)
 	struct device_node *port;
 	unsigned int inputs = 0;
 	unsigned int i;
-	int ep_count;
-	
-	ep_count = of_graph_get_endpoint_count(of_node);
-	printk(">>>>>>>>>>>>>>>>>>>>>> ep_count: %d", ep_count);
 
-	if (ep_count > ISL7998X_NUM_PADS)
-	{
-		printk(">>>>>>>>>>>>>>>>>>>>>> Number of endpoints: %d", ep_count);
+	if (of_graph_get_endpoint_count(of_node) > ISL7998X_NUM_PADS)
 		return -EINVAL;
-	}
 
 	/*
 	 * The driver does not provide means to remap the input ports. It
@@ -598,12 +591,7 @@ static int isl7998x_get_nr_inputs(struct device_node *of_node)
 	for (i = ISL7998X_PAD_VIN1; i <= ISL7998X_PAD_VIN4; i++) {
 		port = of_graph_get_port_by_id(of_node, i);
 		if (!port)
-		{
-			printk(">>>>>>>>>>>>>>>>>>>>>> node: %d port is null", i);
 			continue;
-		}
-
-		printk(">>>>>>>>>>>>>>>>>>>>>> processing Port: %s", port->name);
 
 		inputs |= BIT(i);
 		of_node_put(port);
@@ -618,7 +606,6 @@ static int isl7998x_get_nr_inputs(struct device_node *of_node)
 	     BIT(ISL7998X_PAD_VIN3) | BIT(ISL7998X_PAD_VIN4):
 		return 4;
 	default:
-		printk(">>>>>>>>>>>>>>>>>>>>>> inputs: %d", inputs);
 		return -EINVAL;
 	}
 }
@@ -1472,8 +1459,6 @@ static int isl7998x_probe(struct i2c_client *client)
 	struct i2c_adapter *adapter = to_i2c_adapter(client->dev.parent);
 	int nr_inputs;
 	int ret;
-
-	printk(">>>>>>>>>>>>>>>>>> isl7998x_probe Probing\n");
 
 	ret = i2c_check_functionality(adapter, I2C_FUNC_SMBUS_WORD_DATA);
 	if (!ret) {

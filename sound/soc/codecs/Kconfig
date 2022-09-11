@@ -82,6 +82,7 @@ config SND_SOC_ALL_CODECS
 	imply SND_SOC_CS47L90
 	imply SND_SOC_CS47L92
 	imply SND_SOC_CS53L30
+	imply SND_SOC_CS534X
 	imply SND_SOC_CX20442
 	imply SND_SOC_CX2072X
 	imply SND_SOC_DA7210
@@ -721,6 +722,9 @@ config SND_SOC_CS53L30
 	tristate "Cirrus Logic CS53L30 CODEC"
 	depends on I2C
 
+config SND_SOC_CS534X
+	tristate
+	
 config SND_SOC_CX20442
 	tristate
 	depends on TTY
