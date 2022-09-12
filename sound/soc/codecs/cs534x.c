@@ -38,19 +38,13 @@ static struct snd_soc_dai_driver cs534x_dai = {
 		    },
 };
 
-static struct snd_soc_codec_driver soc_codec_dev_cs534x;
+static struct snd_soc_component_driver soc_component_dev_cs534x;
 
 static int cs534x_probe(struct platform_device *pdev)
 {
-	return snd_soc_register_codec(&pdev->dev,
-				      &soc_codec_dev_cs534x, &cs534x_dai,
+	return devm_snd_soc_register_component(&pdev->dev,
+				      &soc_component_dev_cs534x, &cs534x_dai,
 				      1);
-}
-
-static int cs534x_remove(struct platform_device *pdev)
-{
-	snd_soc_unregister_codec(&pdev->dev);
-	return 0;
 }
 
 static struct platform_driver cs534x_codec_driver = {
@@ -59,7 +53,6 @@ static struct platform_driver cs534x_codec_driver = {
 		   .owner = THIS_MODULE,
 		   },
 	.probe = cs534x_probe,
-	.remove = cs534x_remove,
 };
 
 module_platform_driver(cs534x_codec_driver);
